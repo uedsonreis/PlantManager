@@ -1,60 +1,66 @@
+import { useNavigation } from '@react-navigation/core';
 import React from 'react';
-import { TextInput, SafeAreaView, StyleSheet, Text, View } from 'react-native';
+import { KeyboardAvoidingView, Platform, SafeAreaView, Text, TextInput, View } from 'react-native';
 
+import Button from '../../components/Button';
 import colors from '../../styles/colors';
+
+import styles from './styles';
 
 export default function UserIdentification() {
 
+    const navigation = useNavigation();
+
+    const [ isFocused, setFocused ] = React.useState(false);
+    const [ isFilled, setFilled ] = React.useState(false);
+    const [ name, setName ] = React.useState<string>();
+
+    function handleInputChange(value: string) {
+        setFilled(!!value);
+        setName(value);
+    }
+
+    function handleConfirmation() {
+        if (name) {
+            navigation.navigate('Confirmation');
+        } else {
+            alert('Você precisa informar o seu nome!');
+        }
+    }
+
     return (
         <SafeAreaView style={styles.container}>
-            <View style={styles.content}>
-                
+            <KeyboardAvoidingView
+                style={styles.content}
+                behavior={ Platform.OS === 'ios' ? 'padding' : 'height' }
+            >
                 <View style={styles.form}>
                     
-                    <Text style={styles.emoji}>
-                        😁
-                    </Text>
+                    <View style={styles.header}>
+                        <Text style={styles.emoji}>
+                            { isFilled ? '🤙' : '🤔' }
+                        </Text>
+
+                        <Text style={styles.title}>
+                            Como podemos chamar você?
+                        </Text>
+                    </View>
 
                     <TextInput
-                        style={styles.input}
+                        style={[styles.input, (isFocused || isFilled) && { borderColor: colors.green } ]}
+                        onFocus={() => setFocused(true)} onBlur={() => setFocused(false)}
+                        onChangeText={handleInputChange}
+                        placeholder="Digite seu nome"
                     />
+
+                    <View style={styles.footer}>
+                        <Button text="Confirmar" onPress={handleConfirmation} />
+                    </View>
 
                 </View>
 
-            </View>
+            </KeyboardAvoidingView>
         </SafeAreaView>
     );
 
 }
-
-const styles = StyleSheet.create({
-
-    container: {
-        flex: 1,
-        width: '100%',
-        alignItems: 'center',
-        justifyContent: 'space-around',
-    },
-
-    content: {
-        flex: 1,
-        width: '100%',
-    },
-
-    form: {
-        flex: 1,
-        alignItems: 'center',
-        paddingHorizontal: 54,
-        justifyContent: 'center',
-    },
-
-    emoji: {
-        fontSize: 44,
-    },
-
-    input: {
-        borderBottomWidth: 1,
-        borderColor: colors.gray,
-    },
-
-});

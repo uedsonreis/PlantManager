@@ -1,17 +1,18 @@
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, TouchableOpacityProps } from 'react-native';
 
+import fonts from '../../styles/fonts';
 import colors from '../../styles/colors';
 
 interface Props extends TouchableOpacityProps {
-    text: string, children: any
+    text: string, children?: any
 };
 
 export default function Button({ text, children, ...rest }: Props) {
 
     return (
-        <TouchableOpacity style={styles.button} activeOpacity={0.7} {...rest}>
-            <Text style={styles.buttonText}>
+        <TouchableOpacity style={styles.container} activeOpacity={0.7} {...rest}>
+            <Text style={styles.text}>
                 {text}
             </Text>
             {children}
@@ -21,7 +22,7 @@ export default function Button({ text, children, ...rest }: Props) {
 }
 
 const styles = StyleSheet.create({
-    button: {
+    container: {
         height: 56,
         marginBottom: 10,
         borderRadius: 16,
@@ -31,8 +32,9 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         backgroundColor: colors.green,
     },
-    buttonText: {
-        fontSize: 24,
-        color: 'white',
+    text: {
+        fontSize: 16,
+        color: colors.white,
+        fontFamily: fonts.heading,
     },
 });

@@ -5,8 +5,11 @@ import { Image, SafeAreaView, Text, View } from 'react-native';
 import wateringImg from '../../assets/watering.png';
 import Button from '../../components/Button';
 import styles from './styles';
+import { useNavigation } from '@react-navigation/core';
 
 export default function Welcome() {
+
+    const navigation = useNavigation();
 
     return (
         <SafeAreaView style={styles.container}>
@@ -22,8 +25,8 @@ export default function Welcome() {
                     Nós cuidamos de te lembrar sempre que precisar.
                 </Text>
 
-                <Button text="Avançar" onPress={() => alert('To do')}>
-                    <Ionicons name="chevron-forward-sharp" color="white" size={24} />
+                <Button text="Avançar" onPress={() => navigation.navigate('UserIdentification')}>
+                    <Ionicons name="chevron-forward-sharp" color="white" size={20} />
                 </Button>
             </View>
         </SafeAreaView>

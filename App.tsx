@@ -3,8 +3,7 @@ import AppLoading from 'expo-app-loading';
 import { StatusBar } from 'expo-status-bar';
 import { useFonts, Jost_400Regular, Jost_600SemiBold } from '@expo-google-fonts/jost';
 
-import Welcome from './src/pages/Welcome';
-import UserIdentification from './src/pages/UserIdentification';
+import Routes from './src/routes';
 
 export default function App() {
 
@@ -15,7 +14,7 @@ export default function App() {
     return (
         <>
             <StatusBar style="auto" />
-            <UserIdentification />
+            <Routes />
         </>
     );
 }
