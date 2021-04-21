@@ -1,21 +1,29 @@
-import { StyleSheet } from 'react-native';
+import { Dimensions, StyleSheet } from 'react-native';
 
 import colors from '../../styles/colors';
+import fonts from '../../styles/fonts';
 
 export default StyleSheet.create({
     
     container: {
         flex: 1,
+    },
+
+    wrapper: {
+        flex: 1,
         alignItems: 'center',
-        justifyContent: 'space-between',
+        paddingHorizontal: 15,
+        justifyContent: 'space-around',
     },
 
     title: {
-        fontSize: 32,
+        fontSize: 28,
         marginTop: 38,
+        lineHeight: 34,
         fontWeight: 'bold',
         textAlign: 'center',
         color: colors.heading,
+        fontFamily: fonts.heading,
     },
     
     subtitle: {
@@ -23,11 +31,11 @@ export default StyleSheet.create({
         textAlign: 'center',
         paddingHorizontal: 20,
         color: colors.heading,
+        fontFamily: fonts.text,
     },
 
     image: {
-        width: 292,
-        height: 284,
+        width: Dimensions.get("window").width * 0.9,
     },
 
 });
