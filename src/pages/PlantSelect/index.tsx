@@ -1,25 +1,37 @@
 import React from 'react';
 import { Text, View } from 'react-native';
-import EnviromentButton from '../../components/EnviromentButton';
-
-import Header from '../../components/Header';
 
 import styles from './styles';
+import api from '../../services/api';
+import Header from '../../components/Header';
+import PlaceList from '../../components/PlaceList';
+import PlantBigCard from '../../components/PlantBigCard';
 
 export default function PlantSelect() {
+
+    const [ places, setPlaces ] = React.useState<string[]>();
+
+    React.useEffect(() => {
+        api.get('plantsEnvironments').then(({ data }: any) => {
+            setPlaces([
+                'Todos',
+                ...data.map((p: any) => p.title)
+            ]);
+        });
+    }, []);
+
+    if (!places) return <Text>Carregando...</Text>
 
     return (
         <View style={styles.container}>
 
-            <View style={styles.content}>
-                <Header />
+            <Header />
 
-                <Text style={styles.title}>Em qual ambiente está sua planta?</Text>
+            <Text style={styles.title}>Em qual ambiente está sua planta?</Text>
 
-                <EnviromentButton text="Quarto" />
-                <EnviromentButton text="Sala" active />
+            <PlaceList places={places} />
 
-            </View>
+            <PlantBigCard text="Palmeira" photo="foto.png" />
 
         </View>
     );

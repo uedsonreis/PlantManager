@@ -7,11 +7,8 @@ export default StyleSheet.create({
 
     container: {
         flex: 1,
-        backgroundColor: colors.background,
-    },
-
-    content: {
         paddingHorizontal: 20,
+        backgroundColor: colors.background,
     },
 
     title: {
