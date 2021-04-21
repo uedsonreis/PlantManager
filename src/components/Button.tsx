@@ -1,8 +1,8 @@
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, TouchableOpacityProps } from 'react-native';
 
-import fonts from '../../styles/fonts';
-import colors from '../../styles/colors';
+import fonts from '../styles/fonts';
+import colors from '../styles/colors';
 
 interface Props extends TouchableOpacityProps {
     text: string, children?: any
