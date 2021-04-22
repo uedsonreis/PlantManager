@@ -1,3 +1,8 @@
+export interface Entity {
+    key: string;
+    title: string;
+}
+
 export interface Frequency {
     times: number;
     repeatEvery: string;
