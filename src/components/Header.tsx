@@ -2,22 +2,30 @@ import React from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
 import { getStatusBarHeight } from 'react-native-iphone-x-helper';
 
-import userImg from '../assets/uedson.png';
-import colors from '../styles/colors';
 import fonts from '../styles/fonts';
+import colors from '../styles/colors';
+import userImg from '../assets/uedson.png';
+import { userRepository } from '../repositories';
 
 export default function Header() {
+
+    const [user, setUser] = React.useState<{name: string}>();
+    
+    React.useEffect(() => {
+        userRepository.getUser().then(user => setUser(user));
+    }, []);
+
+    if (!user) return <></>;
 
     return (
         <View style={styles.container}>
 
             <View>
                 <Text style={styles.greeting}>Olá,</Text>
-                <Text style={[styles.greeting, styles.userName]}>Uedson</Text>
+                <Text style={[styles.greeting, styles.userName]}>{user.name}</Text>
             </View>
 
             <Image style={styles.avatar} source={userImg} />
-            
         </View>
     );
 
@@ -30,7 +38,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        marginTop: getStatusBarHeight(),
+        marginTop: getStatusBarHeight() + 10,
     },
 
     greeting: {

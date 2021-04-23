@@ -1,5 +1,5 @@
-import { useNavigation } from '@react-navigation/core';
 import React from 'react';
+import { useNavigation } from '@react-navigation/core';
 import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
 
 import Button from '../components/Button';

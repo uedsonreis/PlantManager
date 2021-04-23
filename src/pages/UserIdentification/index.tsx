@@ -1,30 +1,35 @@
-import { useNavigation } from '@react-navigation/core';
 import React from 'react';
-import { Keyboard, KeyboardAvoidingView, Platform, SafeAreaView, Text, TextInput, TouchableWithoutFeedback, View } from 'react-native';
-
-import Button from '../../components/Button';
-import colors from '../../styles/colors';
+import { useNavigation } from '@react-navigation/core';
+import { Alert, Keyboard, KeyboardAvoidingView, Platform, SafeAreaView, Text, TextInput, TouchableWithoutFeedback, View } from 'react-native';
 
 import styles from './styles';
+import colors from '../../styles/colors';
+import Button from '../../components/Button';
+import { userRepository } from '../../repositories';
 
 export default function UserIdentification() {
 
     const navigation = useNavigation();
 
-    const [ isFocused, setFocused ] = React.useState(false);
-    const [ isFilled, setFilled ] = React.useState(false);
     const [ name, setName ] = React.useState<string>();
+    const [ isFilled, setFilled ] = React.useState(false);
+    const [ isFocused, setFocused ] = React.useState(false);
+
+    React.useEffect(() => {
+        userRepository.getUser().then(user => setName(user.name));
+    }, []);
 
     function handleInputChange(value: string) {
         setFilled(!!value);
         setName(value);
     }
 
-    function handleConfirmation() {
+    async function handleConfirmation() {
         if (name) {
+            await userRepository.save({ name });
             navigation.navigate('Confirmation');
         } else {
-            alert('Você precisa informar o seu nome!');
+            Alert.alert('Você precisa informar o seu nome!');
         }
     }
 
@@ -50,7 +55,7 @@ export default function UserIdentification() {
                         <TextInput
                             style={[styles.input, (isFocused || isFilled) && { borderColor: colors.green } ]}
                             onFocus={() => setFocused(true)} onBlur={() => setFocused(false)}
-                            onChangeText={handleInputChange}
+                            onChangeText={handleInputChange} value={name}
                             placeholder="Digite seu nome"
                         />
 

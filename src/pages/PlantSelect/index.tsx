@@ -8,21 +8,22 @@ import { Entity, Plant } from '../../models';
 import Loading from '../../components/Loading';
 import PlaceList from '../../components/PlaceList';
 import PlantList from '../../components/PlantList';
+import { useNavigation } from '@react-navigation/core';
 
 const objAll = { key: 'all', title: 'Todos' } as Entity;
 
 export default function PlantSelect() {
+
+    const navigation = useNavigation();
 
     const [ places, setPlaces ] = React.useState<Entity[]>();
     const [ plants, setPlants ] = React.useState<Plant[]>();
     const [ filteredPlants, setFilteredPlants ] = React.useState<Plant[]>();
 
     const [ selectedPlace, setSelectedPlace ] = React.useState<Entity>(objAll);
-    const [ selectedPlant, setSelectedPlant ] = React.useState<Plant>();
 
     const [ page, setPage ] = React.useState(1);
     const [ loadingMore, setLoadingMore ] = React.useState(false);
-    const [ loadingAll, setLoadingAll ] = React.useState(false);
 
     async function fetchPlants() {
         const { data } = await api.get(`plants?_sort=name&_page=${page}&_limit=8`);
@@ -35,8 +36,6 @@ export default function PlantSelect() {
                 setFilteredPlants(data);
             }
             setLoadingMore(false);
-        } else {
-            setLoadingAll(true);
         }
     }
 
@@ -61,6 +60,10 @@ export default function PlantSelect() {
         fetchPlants();
     }
 
+    function handleChoosePlant(plant: Plant) {
+        navigation.navigate("PlantSave", { plant });
+    }
+
     React.useEffect(() => {
 
         api.get('plantsEnvironments?_sort=title').then(({ data }: any) => {
@@ -83,9 +86,10 @@ export default function PlantSelect() {
             <PlaceList places={places} selected={selectedPlace} handleClickItem={handlePlaceSelected} />
 
             <PlantList
-                plants={filteredPlants} selected={selectedPlant}
-                handleClickItem={plant => setSelectedPlant(plant)}
-                handleFetchMore={handleFetchMore} loading={loadingMore}
+                loading={loadingMore}
+                plants={filteredPlants}
+                handleFetchMore={handleFetchMore}
+                handleClickItem={handleChoosePlant}
             />
 
         </View>

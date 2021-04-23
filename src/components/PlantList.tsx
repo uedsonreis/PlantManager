@@ -7,13 +7,12 @@ import PlantBigCard from './PlantBigCard';
 
 interface Props {
     plants: Plant[];
-    selected?: Plant;
     loading?: boolean;
     handleClickItem: (selected: Plant) => void;
     handleFetchMore: (distance: number) => void;
 }
 
-export default function PlantList({ plants, selected, loading = false, handleClickItem, handleFetchMore }: Props) {
+export default function PlantList({ plants, loading = false, handleClickItem, handleFetchMore }: Props) {
 
     return (
         <FlatList
@@ -21,12 +20,11 @@ export default function PlantList({ plants, selected, loading = false, handleCli
             showsVerticalScrollIndicator={false}
             contentContainerStyle={styles.container}
             data={plants}
-            keyExtractor={item => item.id+""}
+            keyExtractor={item => String(item.id)}
             renderItem={({ item }) => (
                 <PlantBigCard
                     text={item.name}
                     photo={item.photo}
-                    active={item.id === selected?.id}
                     onPress={() => handleClickItem(item)}
                 />
             )}
