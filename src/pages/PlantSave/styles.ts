@@ -76,4 +76,16 @@ export default StyleSheet.create({
         fontFamily: fonts.complement,
     },
 
+    dateTimePickerButton: {
+        width: '100%',
+        paddingVertical: 40,
+        alignItems: 'center',
+    },
+    
+    dateTimePickerText: {
+        fontSize: 24,
+        color: colors.heading,
+        fontFamily: fonts.text,
+    },
+
 });
