@@ -16,9 +16,9 @@ export class PlantRepository {
     public async save(plant: Plant) {
         const oldPlants = await this.getData();
 
-        await this.storage.setItem(this.key, JSON.stringify({
+        await this.persist({
             [plant.id]: plant, ...oldPlants
-        } as PlantList));
+        } as PlantList);
     }
 
     public async getPlants() {
@@ -40,10 +40,20 @@ export class PlantRepository {
         ));
     }
 
+    public async delete(plantId: number) {
+        const plantList = await this.getData();
+        delete plantList[plantId];
+        await this.persist(plantList);
+    }
+
     private async getData() {
         const jsonString = await this.storage.getItem(this.key);
         const data = jsonString ? JSON.parse(jsonString) : {};
         return data as PlantList;
+    }
+
+    private async persist(plantList: PlantList) {
+        await this.storage.setItem(this.key, JSON.stringify(plantList));
     }
 
 }

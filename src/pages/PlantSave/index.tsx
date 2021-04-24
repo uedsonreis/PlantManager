@@ -3,7 +3,7 @@ import { format, isBefore } from 'date-fns';
 import { SvgFromUri } from 'react-native-svg';
 import { useNavigation, useRoute } from '@react-navigation/core';
 import DateTimePicker, { Event } from '@react-native-community/datetimepicker';
-import { Alert, Image, Platform, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, Image, Platform, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 
 import styles from './styles';
 import { Plant } from '../../models';
@@ -50,7 +50,7 @@ export default function PlantSave() {
     }
 
     return (
-        <View style={styles.container}>
+        <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>
             <View style={styles.plantInfo}>
 
                 <SvgFromUri uri={plant.photo} width={150} height={150} />
@@ -95,8 +95,7 @@ export default function PlantSave() {
                 <Button text="Cadastrar Planta" onPress={handleSave} />
 
             </View>
-
-        </View>
+        </ScrollView>
     );
 
 }

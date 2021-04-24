@@ -1,7 +1,7 @@
 import React from 'react';
 import { pt } from 'date-fns/locale';
 import { formatDistance } from 'date-fns/esm';
-import { FlatList, Image, Text, View } from 'react-native';
+import { Alert, FlatList, Image, Text, View } from 'react-native';
 
 import styles from './styles';
 import { Plant } from '../../models';
@@ -15,17 +15,33 @@ export default function MyPlants() {
     const [ plants, setPlants ] = React.useState<Plant[]>([]);
     const [ nextWatered, setNextWatered ] = React.useState<string>();
 
-    React.useEffect(() => {
-        plantRepository.getPlants().then(data => {
-            if (data.length > 0) {
-                const nextTime = formatDistance(
-                    new Date(data[0].dateTimeNotification).getTime(),
-                    new Date().getTime(), { locale: pt }
-                );
-                setNextWatered(`Não esqueça de regar a ${data[0].name} à ${nextTime}.`);
-                setPlants(data);
+    async function fetchPlants() {
+        const data = await plantRepository.getPlants();
+        
+        if (data.length > 0) {
+            const nextTime = formatDistance(
+                new Date(data[0].dateTimeNotification).getTime(),
+                new Date().getTime(), { locale: pt }
+            );
+            setNextWatered(`Não esqueça de regar a ${data[0].name} à ${nextTime}.`);
+            setPlants(data);
+        }
+    }
+
+    function handleDelete(plant: Plant) {
+        Alert.alert("Remover", `Tem certeza que deseja remover a planta ${plant.name}?`, [
+            { text: 'Não', style: 'cancel' },
+            {
+                text: 'Sim', onPress: async () => {
+                    await plantRepository.delete(plant.id);
+                    await fetchPlants();
+                }
             }
-        });
+        ]);
+    }
+
+    React.useEffect(() => {
+        fetchPlants();
     }, []);
 
     return (
@@ -50,7 +66,10 @@ export default function MyPlants() {
                     data={plants}
                     keyExtractor={item => String(item.id)}
                     renderItem={({ item }) => (
-                        <PlantSmallCard title={item.name} photo={item.photo} hour={item.hour} />
+                        <PlantSmallCard
+                            title={item.name} photo={item.photo} hour={item.hour}
+                            onPress={() => handleDelete(item)}
+                        />
                     )}
                 />
 
