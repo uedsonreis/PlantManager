@@ -20,4 +20,5 @@ export interface Plant {
     environments: string[];
 
     dateTimeNotification: Date;
+    hour: string;
 }

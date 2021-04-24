@@ -27,7 +27,10 @@ export default function UserIdentification() {
     async function handleConfirmation() {
         if (name) {
             await userRepository.save({ name });
-            navigation.navigate('Confirmation');
+            navigation.navigate('Confirmation', {
+                emoji: '😄', title: 'Protinho', buttonTitle: 'Começar', nextPage: 'PlantCRUD',
+                subtitle: 'Agora vamos começar a te ajudar a cuidar das suas plantas com muito cuidado.',
+            });
         } else {
             Alert.alert('Você precisa informar o seu nome!');
         }

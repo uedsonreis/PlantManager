@@ -1,7 +1,7 @@
 import React from 'react';
 import { format, isBefore } from 'date-fns';
 import { SvgFromUri } from 'react-native-svg';
-import { useRoute } from '@react-navigation/core';
+import { useNavigation, useRoute } from '@react-navigation/core';
 import DateTimePicker, { Event } from '@react-native-community/datetimepicker';
 import { Alert, Image, Platform, Text, TouchableOpacity, View } from 'react-native';
 
@@ -13,6 +13,7 @@ import { plantRepository } from '../../repositories';
 
 export default function PlantSave() {
 
+    const navigation = useNavigation();
     const route = useRoute();
     const { plant } = route.params as { plant: Plant };
 
@@ -40,7 +41,12 @@ export default function PlantSave() {
 
     async function handleSave() {
         plant.dateTimeNotification = selectedTime;
-        plantRepository.save(plant);
+        await plantRepository.save(plant);
+
+        navigation.navigate('Confirmation', {
+            emoji: '👍', title: 'Planta salva com sucesso!', buttonTitle: 'Ver todas as Plantas', nextPage: 'PlantCRUD',
+            subtitle: 'Fique tranquilo agora vamos lembrar você na hora de cuidar de sua planta!',
+        });
     }
 
     return (
