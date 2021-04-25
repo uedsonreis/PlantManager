@@ -11,16 +11,17 @@ interface Props extends RectButtonProps {
     hour: string;
     title: string;
     photo: string;
+    handleDelete: () => void;
 }
 
-export default function PlantSmallCard({ title, hour, photo, ...rest }: Props) {
+export default function PlantSmallCard({ title, hour, photo, handleDelete, ...rest }: Props) {
 
     return (
         <Swipeable
             overshootRight={false}
             renderRightActions={() => (
                 <Animated.View>
-                    <RectButton style={styles.buttonRemove} onPress={rest.onPress}>
+                    <RectButton style={styles.buttonRemove} onPress={handleDelete}>
                         <Ionicons name="trash" size={32} color={colors.white} />       
                     </RectButton>
                 </Animated.View>

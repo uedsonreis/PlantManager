@@ -9,6 +9,7 @@ import Header from '../../components/Header';
 import waterdrop from '../../assets/waterdrop.png';
 import { plantRepository } from '../../repositories';
 import PlantSmallCard from '../../components/PlantSmallCard';
+import notification from '../../services/notification';
 
 export default function MyPlants() {
 
@@ -23,7 +24,7 @@ export default function MyPlants() {
                 new Date(data[0].dateTimeNotification).getTime(),
                 new Date().getTime(), { locale: pt }
             );
-            setNextWatered(`Não esqueça de regar a ${data[0].name} à ${nextTime}.`);
+            setNextWatered(`Não esqueça de regar a ${data[0].name} daqui à ${nextTime}.`);
             setPlants(data);
         }
     }
@@ -34,7 +35,8 @@ export default function MyPlants() {
             {
                 text: 'Sim', onPress: async () => {
                     await plantRepository.delete(plant.id);
-                    await fetchPlants();
+                    notification.unregister(plant);
+                    fetchPlants();
                 }
             }
         ]);
@@ -68,7 +70,7 @@ export default function MyPlants() {
                     renderItem={({ item }) => (
                         <PlantSmallCard
                             title={item.name} photo={item.photo} hour={item.hour}
-                            onPress={() => handleDelete(item)}
+                            handleDelete={() => handleDelete(item)}
                         />
                     )}
                 />

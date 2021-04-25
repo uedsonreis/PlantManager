@@ -19,6 +19,7 @@ export interface Plant {
     frequency: Frequency;
     environments: string[];
 
-    dateTimeNotification: Date;
     hour: string;
+    notificationId: string;
+    dateTimeNotification: Date;
 }

@@ -10,6 +10,7 @@ import { Plant } from '../../models';
 import Button from '../../components/Button';
 import waterDrop from '../../assets/waterdrop.png';
 import { plantRepository } from '../../repositories';
+import notification from '../../services/notification';
 
 export default function PlantSave() {
 
@@ -40,8 +41,12 @@ export default function PlantSave() {
     }
 
     async function handleSave() {
-        plant.dateTimeNotification = selectedTime;
-        await plantRepository.save(plant);
+        const newPlant: Plant = {
+            ...plant,
+            dateTimeNotification: selectedTime
+        };
+        const notificationId = await notification.register(newPlant);
+        await plantRepository.save({ ...newPlant, notificationId });
 
         navigation.navigate('Confirmation', {
             emoji: '👍', title: 'Planta salva com sucesso!', buttonTitle: 'Ver todas as Plantas', nextPage: 'PlantCRUD',

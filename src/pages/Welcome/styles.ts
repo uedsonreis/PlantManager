@@ -20,7 +20,6 @@ export default StyleSheet.create({
         fontSize: 28,
         marginTop: 38,
         lineHeight: 34,
-        fontWeight: 'bold',
         textAlign: 'center',
         color: colors.heading,
         fontFamily: fonts.heading,
